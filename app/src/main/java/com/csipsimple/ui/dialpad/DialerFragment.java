@@ -35,6 +35,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
@@ -46,6 +47,9 @@ import android.text.TextWatcher;
 import android.text.method.DialerKeyListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -61,11 +65,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.csipsimple.R;
 import com.csipsimple.api.ISipService;
 import com.csipsimple.api.SipCallSession;
@@ -74,6 +73,7 @@ import com.csipsimple.api.SipManager;
 import com.csipsimple.api.SipProfile;
 import com.csipsimple.api.SipUri.ParsedSipContactInfos;
 import com.csipsimple.models.Filter;
+import com.csipsimple.plugins.telephony.CallHandler;
 import com.csipsimple.ui.SipHome.ViewPagerVisibilityListener;
 import com.csipsimple.ui.dialpad.DialerLayout.OnAutoCompleteListVisibilityChangedListener;
 import com.csipsimple.utils.CallHandlerPlugin;
@@ -90,7 +90,7 @@ import com.csipsimple.widgets.DialerCallBar.OnDialActionListener;
 import com.csipsimple.widgets.Dialpad;
 import com.csipsimple.widgets.Dialpad.OnDialKeyListener;
 
-public class DialerFragment extends SherlockFragment implements OnClickListener, OnLongClickListener,
+public class DialerFragment extends Fragment implements OnClickListener, OnLongClickListener,
         OnDialKeyListener, TextWatcher, OnDialActionListener, ViewPagerVisibilityListener, OnKeyListener,
         OnAutoCompleteListVisibilityChangedListener {
 
@@ -207,7 +207,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
         
         accountChooserFilterItem = accountChooserButton.addExtraMenuItem(R.string.apply_rewrite);
         accountChooserFilterItem.setCheckable(true);
-        accountChooserFilterItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        accountChooserFilterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 setRewritingFeature(!accountChooserFilterItem.isChecked());
@@ -471,6 +471,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
 
     }
 
+    @Override
     public void onClick(View view) {
         // ImageButton b = null;
         int viewId = view.getId();
@@ -486,6 +487,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
         }
     }
 
+    @Override
     public boolean onLongClick(View view) {
         // ImageButton b = (ImageButton)view;
         int vId = view.getId();
@@ -502,6 +504,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
         return false;
     }
 
+    @Override
     public void afterTextChanged(Editable input) {
         // Change state of digit dialer
         final boolean notEmpty = digits.length() != 0;
@@ -573,7 +576,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
         //        : R.drawable.ic_menu_switch_digit);
 
         // Invalidate to ask to require the text button to a digit button
-        getSherlockActivity().supportInvalidateOptionsMenu();
+        getActivity().supportInvalidateOptionsMenu();
     }
     
     private boolean hasAutocompleteList() {
@@ -600,6 +603,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
     }
 
     // @Override
+    @Override
     public void onTrigger(int keyCode, int dialTone) {
         dialFeedback.giveFeedback(dialTone);
         keyPressed(keyCode);
@@ -629,7 +633,7 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
         delMenu.setIcon(
                 isDigit ? R.drawable.ic_menu_switch_txt
                         : R.drawable.ic_menu_switch_digit).setShowAsAction( action );
-        delMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        delMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 setTextDialing(isDigit);
@@ -772,8 +776,8 @@ public class DialerFragment extends SherlockFragment implements OnClickListener,
 
                 missingVoicemailDialog.show();
             }
-        } else if (accountToUse == CallHandlerPlugin.getAccountIdForCallHandler(getActivity(),
-                (new ComponentName(getActivity(), com.csipsimple.plugins.telephony.CallHandler.class).flattenToString()))) {
+        } else if (accountToUse.equals(CallHandlerPlugin.getAccountIdForCallHandler(getActivity(),
+                (new ComponentName(getActivity(), CallHandler.class).flattenToString())))) {
             // Case gsm voice mail
             TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(
                     Context.TELEPHONY_SERVICE);

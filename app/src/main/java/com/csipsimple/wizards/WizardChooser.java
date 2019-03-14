@@ -24,6 +24,7 @@ package com.csipsimple.wizards;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,14 +33,13 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockExpandableListActivity;
 import com.csipsimple.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WizardChooser extends SherlockExpandableListActivity {
+public class WizardChooser extends AppCompatActivity {
 	private ArrayList<ArrayList<Map<String, Object>>> childDatas;
 
 	// private static final String THIS_FILE = "SIP ADD ACC W";
@@ -68,7 +68,7 @@ public class WizardChooser extends SherlockExpandableListActivity {
 				new String[] { WizardUtils.LABEL }, new int[] { android.R.id.text1 } );
 		
 		
-		setListAdapter(adapter);
+//		setListAdapter(adapter);
 
 		Button cancelBt = (Button) findViewById(R.id.cancel_bt);
 		cancelBt.setOnClickListener(new OnClickListener() {
@@ -79,14 +79,13 @@ public class WizardChooser extends SherlockExpandableListActivity {
 		});
 		
 		if(childDatas.size() >= 1) {
-		    getExpandableListView().expandGroup(0);
+//		    getExpandableListView().expandGroup(0);
 		}
 		if(childDatas.size() >= 2) {
-		    getExpandableListView().expandGroup(1);
+//		    getExpandableListView().expandGroup(1);
 		}
 	}
 	
-	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		Map<String, Object> data = childDatas.get(groupPosition).get(childPosition);
 		String wizard_id = (String) data.get(WizardUtils.ID);

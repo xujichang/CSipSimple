@@ -39,10 +39,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.csipsimple.R;
 import com.csipsimple.api.SipConfigManager;
 import com.csipsimple.api.SipManager;
+import com.csipsimple.ext.SherlockDialogFragment;
 import com.csipsimple.utils.CollectLogs;
 import com.csipsimple.utils.CustomDistribution;
 import com.csipsimple.utils.Log;

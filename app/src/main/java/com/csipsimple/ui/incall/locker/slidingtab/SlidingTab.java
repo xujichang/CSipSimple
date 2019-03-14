@@ -392,6 +392,7 @@ public class SlidingTab extends ViewGroup implements IOnLeftRightProvider {
 	
 	
 
+	@Override
 	public void resetView() {
 		leftSlider.reset();
 		rightSlider.reset();

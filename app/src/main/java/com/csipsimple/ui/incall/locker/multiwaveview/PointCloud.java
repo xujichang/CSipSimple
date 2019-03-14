@@ -1,22 +1,28 @@
 /**
  * Copyright (C) 2010-2012 Regis Montoya (aka r3gis - www.r3gis.fr)
  * This file is part of CSipSimple.
- *
- *  CSipSimple is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  If you own a pjsip commercial license you can also redistribute it
- *  and/or modify it under the terms of the GNU Lesser General Public License
- *  as an android library.
- *
- *  CSipSimple is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with CSipSimple.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * CSipSimple is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * If you own a pjsip commercial license you can also redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License
+ * as an android library.
+ * <p>
+ * CSipSimple is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with CSipSimple.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * This file contains relicensed code from Apache copyright of
+ * Copyright (C) 2012 The Android Open Source Project
+ * <p>
+ * This file contains relicensed code from Apache copyright of
+ * Copyright (C) 2012 The Android Open Source Project
  */
 /**
  * This file contains relicensed code from Apache copyright of 
@@ -28,7 +34,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.util.FloatMath;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -55,6 +60,7 @@ public class PointCloud {
         private float radius = 50;
         private float width = 200.0f; // TODO: Make configurable
         private float alpha = 0.0f;
+
         public void setRadius(float r) {
             radius = r;
         }
@@ -70,7 +76,9 @@ public class PointCloud {
         public float getAlpha() {
             return alpha;
         }
-    };
+    }
+
+    ;
 
     public class GlowManager {
         private float x;
@@ -148,7 +156,7 @@ public class PointCloud {
         }
         mOuterRadius = outerRadius;
         mPointCloud.clear();
-        final float pointAreaRadius =  (outerRadius - innerRadius);
+        final float pointAreaRadius = (outerRadius - innerRadius);
         final float ds = (2.0f * PI * innerRadius / INNER_POINTS);
         final int bands = (int) Math.round(pointAreaRadius / ds);
         final float dr = pointAreaRadius / bands;
@@ -156,11 +164,11 @@ public class PointCloud {
         for (int b = 0; b <= bands; b++, r += dr) {
             float circumference = 2.0f * PI * r;
             final int pointsInBand = (int) (circumference / ds);
-            float eta = PI/2.0f;
+            float eta = PI / 2.0f;
             float dEta = 2.0f * PI / pointsInBand;
             for (int i = 0; i < pointsInBand; i++) {
-                float x = r * (float)Math.cos(eta);
-                float y = r * (float)Math.sin(eta);
+                float x = r * (float) Math.cos(eta);
+                float y = r * (float) Math.sin(eta);
                 eta += dEta;
                 mPointCloud.add(new Point(x, y, r));
             }
@@ -168,7 +176,7 @@ public class PointCloud {
     }
 
     public void setScale(float scale) {
-        mScale  = scale;
+        mScale = scale;
     }
 
     public float getScale() {
@@ -176,7 +184,7 @@ public class PointCloud {
     }
 
     private static float hypot(float x, float y) {
-        return (float)Math.sqrt(x*x + y*y);
+        return (float) Math.sqrt(x * x + y * y);
     }
 
     private static float max(float a, float b) {
@@ -188,7 +196,7 @@ public class PointCloud {
         float glowDistance = hypot(glowManager.x - point.x, glowManager.y - point.y);
         float glowAlpha = 0.0f;
         if (glowDistance < glowManager.radius) {
-            float cosf = (float)Math.cos(PI * 0.25f * glowDistance / glowManager.radius);
+            float cosf = (float) Math.cos(PI * 0.25f * glowDistance / glowManager.radius);
             glowAlpha = glowManager.alpha * max(0.0f, (float) Math.pow(cosf, 10.0f));
         }
 
@@ -197,7 +205,7 @@ public class PointCloud {
         float distanceToWaveRing = (radius - waveManager.radius);
         float waveAlpha = 0.0f;
         if (distanceToWaveRing < waveManager.width * 0.5f && distanceToWaveRing < 0.0f) {
-            float cosf = (float)Math.cos(PI * 0.25f * distanceToWaveRing / waveManager.width);
+            float cosf = (float) Math.cos(PI * 0.25f * distanceToWaveRing / waveManager.width);
             waveAlpha = waveManager.alpha * max(0.0f, (float) Math.pow(cosf, 20.0f));
         }
 
@@ -210,7 +218,8 @@ public class PointCloud {
 
     public void draw(Canvas canvas) {
         ArrayList<Point> points = mPointCloud;
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        //        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.save();
         canvas.scale(mScale, mScale, mCenterX, mCenterY);
         for (int i = 0; i < points.size(); i++) {
             Point point = points.get(i);
@@ -220,10 +229,12 @@ public class PointCloud {
             final float py = point.y + mCenterY;
             int alpha = getAlphaForPoint(point);
 
-            if (alpha == 0) continue;
+            if (alpha == 0)
+                continue;
 
             if (mDrawable != null) {
-                canvas.save(Canvas.MATRIX_SAVE_FLAG);
+                //                canvas.save(Canvas.MATRIX_SAVE_FLAG);
+                canvas.save();
                 final float cx = mDrawable.getIntrinsicWidth() * 0.5f;
                 final float cy = mDrawable.getIntrinsicHeight() * 0.5f;
                 final float s = pointSize / MAX_POINT_SIZE;

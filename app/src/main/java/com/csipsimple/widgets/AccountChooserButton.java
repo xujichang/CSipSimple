@@ -117,7 +117,7 @@ public class AccountChooserButton extends LinearLayout implements OnClickListene
         textView = (TextView) findViewById(R.id.quickaction_text);
         imageView = (ImageView) findViewById(R.id.quickaction_icon);
 
-//        mMenuBuilder = new MenuBuilder(getContext());
+        mMenuBuilder = new MenuBuilder(getContext());
         
         // Init accounts
         setAccount(null);
@@ -435,7 +435,7 @@ public class AccountChooserButton extends LinearLayout implements OnClickListene
 
 
 //    /* (non-Javadoc)
-//     * @see com.actionbarsherlock.internal.view.View_HasStateListenerSupport#addOnAttachStateChangeListener(com.actionbarsherlock.internal.view.View_OnAttachStateChangeListener)
+//     * @see com.com.actionbarsherlock.internal.view.View_HasStateListenerSupport#addOnAttachStateChangeListener(com.com.actionbarsherlock.internal.view.View_OnAttachStateChangeListener)
 //     */
 //    @Override
 //    public void addOnAttachStateChangeListener(View_OnAttachStateChangeListener listener) {
@@ -443,7 +443,7 @@ public class AccountChooserButton extends LinearLayout implements OnClickListene
 //    }
 //
 //    /* (non-Javadoc)
-//     * @see com.actionbarsherlock.internal.view.View_HasStateListenerSupport#removeOnAttachStateChangeListener(com.actionbarsherlock.internal.view.View_OnAttachStateChangeListener)
+//     * @see com.com.actionbarsherlock.internal.view.View_HasStateListenerSupport#removeOnAttachStateChangeListener(com.com.actionbarsherlock.internal.view.View_OnAttachStateChangeListener)
 //     */
 //    @Override
 //    public void removeOnAttachStateChangeListener(View_OnAttachStateChangeListener listener) {
@@ -457,7 +457,7 @@ public class AccountChooserButton extends LinearLayout implements OnClickListene
             mAccount = account;
         }
         /* (non-Javadoc)
-         * @see com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener#onMenuItemClick(com.actionbarsherlock.view.MenuItem)
+         * @see com.com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener#onMenuItemClick(com.com.actionbarsherlock.view.MenuItem)
          */
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -467,8 +467,6 @@ public class AccountChooserButton extends LinearLayout implements OnClickListene
     }
     
     public MenuItem addExtraMenuItem(int titleRes) {
-//        return mMenuBuilder.add(R.id.menu_accbtn_extras, MenuBuilder.NONE, 100, titleRes);
-        return null;
+        return mMenuBuilder.add(R.id.menu_accbtn_extras, MenuBuilder.NONE, 100, titleRes);
     }
-
 }

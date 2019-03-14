@@ -12,10 +12,6 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
-    <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="25" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -568,11 +564,6 @@
         <activity
             android:name="com.csipsimple.wizards.impl.MondotalkCreate"
             android:theme="@style/DarkTheme" />
-
-        <!--Test -->
-        <instrumentation android:targetPackage="com.csipsimple"
-                         android:name="android.test.InstrumentationTestRunner" />
-        <uses-library android:name="android.test.runner" />
     </application>
 
 </manifest>

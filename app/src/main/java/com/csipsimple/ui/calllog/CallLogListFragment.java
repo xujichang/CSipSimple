@@ -29,10 +29,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -153,7 +153,7 @@ public class CallLogListFragment extends CSSListFragment implements ViewPagerVis
             mShowOptionsMenu = visible;
             // Invalidate the options menu since we are changing the list of
             // options shown in it.
-            AppCompatActivity activity = getActivity();
+            FragmentActivity activity = getActivity();
             if (activity != null) {
                 activity.invalidateOptionsMenu();
             }
@@ -222,6 +222,7 @@ public class CallLogListFragment extends CSSListFragment implements ViewPagerVis
         alertDialog.setMessage(getString(R.string.callLog_delDialog_message));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.callLog_delDialog_yes),
                 new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         getActivity().getContentResolver().delete(SipManager.CALLLOG_URI, null,
                                 null);
@@ -237,6 +238,7 @@ public class CallLogListFragment extends CSSListFragment implements ViewPagerVis
     }
 
     // Loader
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         return new CursorLoader(getActivity(), SipManager.CALLLOG_URI, new String[] {
@@ -300,7 +302,7 @@ public class CallLogListFragment extends CSSListFragment implements ViewPagerVis
     
     private void turnOnActionMode() {
         Log.d(THIS_FILE, "Long press");
-        mMode = getSherlockActivity().startActionMode(new CallLogActionMode());
+        mMode = getActivity().startActionMode(new CallLogActionMode());
         ListView lv = getListView();
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         
@@ -311,7 +313,7 @@ public class CallLogListFragment extends CSSListFragment implements ViewPagerVis
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             Log.d(THIS_FILE, "onCreateActionMode");
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.call_log_menu, menu);
+            getActivity().getMenuInflater().inflate(R.menu.call_log_menu, menu);
             return true;
         }
 
